@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 def add_tm(soup):
     tm = "\u2122"
-    pattern = re.compile(rf"\b([a-zA-Z]{{6}})(?=[^{tm}])\b")
+    pattern = re.compile(rf"\b([^_\W\d]{{6}})(?=([^{tm}]|$))\b")
     for string in list(soup.strings):
         if string.parent.name not in ["code", "pre"]:
             new_string = pattern.sub(r"\1" + tm, string)
