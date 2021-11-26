@@ -9,7 +9,7 @@ Main tools are `http.server` and `BeautifulSoup`
 Install and run:  
 ```bash
 # install
-$ git clone https://github.com/efojs/ivelum
+$ git clone https://github.com/efojs/reverse_proxy
 $ cd ivelum
 $ pipenv install
 
