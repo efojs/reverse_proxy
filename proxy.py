@@ -13,12 +13,22 @@ def add_tm(soup):
             tm = "\u2122"
             new_string = pattern.sub(r"\1" + tm, string)
             string.replace_with(new_string)
+    return soup
+
+
+def remove_base_url(body_str):
+    base_url = Proxy.base_url
+    base_url_pattern = re.compile(
+        re.sub(r"(https)(://)(.*[^/])(/$)?", r"\1?\2\3/?", base_url)
+    )
+    return re.sub(base_url_pattern, "/", body_str)
 
 
 def format_text(body):
     soup = BeautifulSoup(body, "html.parser")
-    add_tm(soup)
-    return str(soup).encode()
+    soup = add_tm(soup)
+    formatted_body = remove_base_url(str(soup))
+    return formatted_body.encode()
 
 
 class Proxy(http.server.SimpleHTTPRequestHandler):
