@@ -1,5 +1,6 @@
 import http.server
 import re
+import urllib.error
 import urllib.request
 
 from bs4 import BeautifulSoup
@@ -24,9 +25,13 @@ class Proxy(http.server.SimpleHTTPRequestHandler):
     base_url = "https://news.ycombinator.com"
 
     def do_GET(self):
-        resp = urllib.request.urlopen(self.base_url + self.path)
-        self.send_response(resp.status)
-        self.send_header("Content-Type", resp.headers["Content-Type"])
+        try:
+            resp = urllib.request.urlopen(self.base_url + self.path)
+            self.send_response(resp.status)
+            self.send_header("Content-Type", resp.headers["Content-Type"])
+        except urllib.error.HTTPError as e:
+            self.send_error(e.code)
+            return
 
         if "text/html" in resp.headers["Content-Type"]:
             if "charset" not in resp.headers["Content-Type"]:
