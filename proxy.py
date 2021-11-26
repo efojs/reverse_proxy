@@ -7,10 +7,10 @@ from bs4 import BeautifulSoup
 
 
 def add_tm(soup):
-    pattern = re.compile(r"\b([a-zA-Z]{6})\b")
+    tm = "\u2122"
+    pattern = re.compile(rf"\b([a-zA-Z]{{6}})(?=[^{tm}])\b")
     for string in list(soup.strings):
         if string.parent.name not in ["code", "pre"]:
-            tm = "\u2122"
             new_string = pattern.sub(r"\1" + tm, string)
             string.replace_with(new_string)
     return soup
