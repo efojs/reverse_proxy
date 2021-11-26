@@ -27,13 +27,16 @@ class Proxy(http.server.SimpleHTTPRequestHandler):
         resp = urllib.request.urlopen(self.base_url + self.path)
         self.send_response(resp.status)
         self.send_header("Content-Type", resp.headers["Content-Type"])
-        self.end_headers()
 
         if "text/html" in resp.headers["Content-Type"]:
+            if "charset" not in resp.headers["Content-Type"]:
+                self.send_header("Content-Type", "text/html; charset=utf-8")
             body = resp.read().decode()
             formatted_body = format_text(body)
+            self.end_headers()
             self.wfile.write(formatted_body)
         else:
+            self.end_headers()
             self.copyfile(resp, self.wfile)
 
 
