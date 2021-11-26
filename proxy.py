@@ -31,8 +31,8 @@ class Proxy(http.server.SimpleHTTPRequestHandler):
 
         if "text/html" in resp.headers["Content-Type"]:
             body = resp.read().decode()
-            formated_body = format_text(body)
-            self.wfile.write(formated_body)
+            formatted_body = format_text(body)
+            self.wfile.write(formatted_body)
         else:
             self.copyfile(resp, self.wfile)
 
